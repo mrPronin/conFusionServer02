@@ -56,7 +56,8 @@ dishRouter.route('/:dishId')
     });
 })
 .delete(Verify.verifyOrdinaryUser, Verify.verifyAdmin, function(req, res, next){
-    Dishes.findByIdAndRemove(req.params.dishId, function (err, resp) {        if (err) throw err;
+    Dishes.findByIdAndRemove(req.params.dishId, function (err, resp) {        
+        if (err) throw err;
         res.json(resp);
     });
 });
@@ -115,7 +116,7 @@ dishRouter.route('/:dishId/comments/:commentId')
     Dishes.findById(req.params.dishId, function (err, dish) {
         if (err) throw err;
         dish.comments.id(req.params.commentId).remove();
-                req.body.postedBy = req.decoded._doc._id;
+        req.body.postedBy = req.decoded._doc._id;
         dish.comments.push(req.body);
         dish.save(function (err, dish) {
             if (err) throw err;

@@ -85,8 +85,8 @@ router.get('/facebook/callback', function(req,res,next){
           err: 'Could not log in user'
         });
       }
-              var token = Verify.getToken(user);
-              res.status(200).json({
+        var token = Verify.getToken(user);
+        res.status(200).json({
         status: 'Login successful!',
         success: true,
         token: token
