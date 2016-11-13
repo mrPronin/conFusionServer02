@@ -11,7 +11,7 @@ favoriteRouter.use(bodyParser.json());
 favoriteRouter.route('/')
 .all(Verify.verifyOrdinaryUser)
 .get(function (req, res, next) {
-    Favorites.find({})
+    Favorite.find({'postedBy': req.decoded._doc._id})
         .populate('postedBy')
         .populate('dishes')
         .exec(function (err, dish) {
@@ -30,11 +30,9 @@ favoriteRouter.route('/')
                     favorite.dishes.push(req.body._id);
                     favorite.save(function (err, favorite) {
                         if (err) throw err;
-//                        console.log('Favorite updated! Id: ' + favorite._id);
                         res.json(favorite);
                     });
                 } else {
-//                    console.log('Dish already exist');
                     res.json(favorite);
                 }
             });
@@ -47,10 +45,9 @@ favoriteRouter.route('/')
             });
         }
     });
-//    res.end('Added the favorite');
 })
 .delete(function(req, res, next) {
-    Favorites.remove({}, function (err, resp) {
+    Favorite.remove({'postedBy': req.decoded._doc._id}, function (err, resp) {
         if (err) throw err;
         res.json(resp);
     });
